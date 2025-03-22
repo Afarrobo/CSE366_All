@@ -72,18 +72,18 @@ class Agent(pygame.sprite.Sprite):
         start = tuple(self.position)
         goal = target
 
-        # Initial threshold is the heuristic from start to goal
+       
         threshold = self.heuristic(start, goal)
         
         while True:
             path, cost, new_threshold = self.ida_star_search(start, goal, threshold)
             
             if path:
-                return path, cost  # Found a valid path
+                return path, cost 
             elif new_threshold == float('inf'):
-                return None  # No path found
+                return None  
             else:
-                threshold = new_threshold  # Increase threshold and continue search
+                threshold = new_threshold  
 
     def ida_star_search(self, node, goal, threshold, path=None, g_cost=0):
         """Recursive depth-first search with heuristic pruning."""
@@ -93,32 +93,32 @@ class Agent(pygame.sprite.Sprite):
         f_cost = g_cost + self.heuristic(node, goal)
 
         if f_cost > threshold:
-            return None, None, f_cost  # Return new threshold if over limit
+            return None, None, f_cost  
 
         if node == goal:
-            return path, g_cost, None  # Goal reached, return path and cost
+            return path, g_cost, None  
 
         min_threshold = float('inf')
         neighbors = self.get_neighbors(*node)
 
         for neighbor in neighbors:
-            if neighbor in path:  # Avoid cycles
+            if neighbor in path: 
                 continue
 
             new_path = path + [neighbor]
-            new_g_cost = g_cost + 1  # Assuming uniform cost
+            new_g_cost = g_cost + 1  
 
             result, result_cost, new_thresh = self.ida_star_search(
                 neighbor, goal, threshold, new_path, new_g_cost
             )
 
-            if result:  # If a valid path is found
+            if result:  
                 return result, result_cost, None
             
             if new_thresh is not None:
                 min_threshold = min(min_threshold, new_thresh)
 
-        return None, None, min_threshold  # Return new threshold for next iteration
+        return None, None, min_threshold  
 
     def heuristic(self, position, goal):
         """Manhattan distance heuristic."""

@@ -3,12 +3,12 @@ import sys
 from agent import Agent
 from environment import Environment
 
-# Window and grid settings
+
 WINDOW_WIDTH, WINDOW_HEIGHT = 800, 600
 GRID_SIZE = 40
 STATUS_WIDTH = 200
 
-# Colors
+
 BACKGROUND_COLOR = (255, 255, 255)
 BARRIER_COLOR = (0, 0, 0)
 TASK_COLOR = (255, 0, 0)
@@ -25,13 +25,13 @@ def main():
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 24)
 
-    # Create the environment and agent
+  
     environment = Environment(WINDOW_WIDTH, WINDOW_HEIGHT, GRID_SIZE, num_tasks=5, num_barriers=15)
     agent = Agent(environment, GRID_SIZE)
     all_sprites = pygame.sprite.Group()
     all_sprites.add(agent)
 
-    # Start button properties
+ 
     button_width, button_height = 100, 50
     button_x = WINDOW_WIDTH + (STATUS_WIDTH - button_width) // 2
     button_y = WINDOW_HEIGHT // 2 - button_height // 2
@@ -49,41 +49,41 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            # Check for Start button click
+         
             if not simulation_started and event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(event.pos):
                     simulation_started = True
                     agent.find_nearest_task()
 
-        # Draw background
+      
         screen.fill(BACKGROUND_COLOR)
 
-        # Draw grid
+      
         for x in range(environment.columns):
             for y in range(environment.rows):
                 rect = pygame.Rect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE)
                 pygame.draw.rect(screen, (200, 200, 200), rect, 1)
 
-        # Draw barriers
+      
         for (bx, by) in environment.barrier_locations:
             pygame.draw.rect(screen, BARRIER_COLOR, (bx * GRID_SIZE, by * GRID_SIZE, GRID_SIZE, GRID_SIZE))
 
-        # Draw tasks
+       
         for (tx, ty), task_number in environment.task_locations.items():
             pygame.draw.rect(screen, TASK_COLOR, (tx * GRID_SIZE, ty * GRID_SIZE, GRID_SIZE, GRID_SIZE))
             task_text = font.render(str(task_number), True, TEXT_COLOR)
             screen.blit(task_text, (tx * GRID_SIZE + 10, ty * GRID_SIZE + 10))
 
-        # Draw agent
+      
         all_sprites.draw(screen)
 
-        # Move agent if simulation is started
+      
         current_time = pygame.time.get_ticks()
         if simulation_started and agent.moving and (current_time - last_move_time > MOVEMENT_DELAY):
             agent.move()
             last_move_time = current_time  
 
-        # Status Panel
+      
         status_x = WINDOW_WIDTH + 10
         algorithm_text = "Algorithm: IDA* Search"
         task_status_text = f"Tasks Completed: {agent.task_completed}"
@@ -97,7 +97,7 @@ def main():
         screen.blit(font.render(completed_tasks_text, True, TEXT_COLOR), (status_x, 110))
         screen.blit(font.render(total_cost_text, True, TEXT_COLOR), (status_x, 140))
 
-        # Draw start button
+     
         if not simulation_started:
             pygame.draw.rect(screen, BUTTON_COLOR, button_rect)
             button_text_surface = font.render("Start", True, BUTTON_TEXT_COLOR)
