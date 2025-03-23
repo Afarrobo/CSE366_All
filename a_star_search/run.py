@@ -66,8 +66,7 @@ def main():
         for x in range(environment.columns):
             for y in range(environment.rows):
                 rect = pygame.Rect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE)
-                pygame.draw.rect(screen, (200, 200, 200), rect, 1)  # Draw grid lines
-
+                pygame.draw.rect(screen, (200, 200, 200), rect, 1) 
        
         for (bx, by) in environment.barrier_locations:
             barrier_rect = pygame.Rect(bx * GRID_SIZE, by * GRID_SIZE, GRID_SIZE, GRID_SIZE)
